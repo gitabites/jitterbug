@@ -34,7 +34,6 @@ var margin = {top: 40, right: 150, bottom: 30, left: 40},
     height = 600 - margin.top - margin.bottom;
 
 
-// setup x 
 var xValue = function(d) { return d.score;}, // data -> value
     xScale = d3.scale.linear().range([0, width]), // value -> display
     xMap = function(d) { return xScale(xValue(d));}, // data -> display
@@ -42,7 +41,6 @@ var xValue = function(d) { return d.score;}, // data -> value
 
 var format = d3.format(",.2f");
 
-// setup y
 var yValue = function(d) { return d.price_oz;}, // data -> value
     yScale = d3.scale.linear().range([height, 0]), // value -> display
     yMap = function(d) { return yScale(yValue(d));}, // data -> display
@@ -51,34 +49,25 @@ var yValue = function(d) { return d.price_oz;}, // data -> value
       .tickFormat(function(d) { return "$" + d; })
       .orient("left");
 
-// setup fill color
-var cValue = function(d) { return d.coffee_shop;},
-    color = d3.scale.category20();
-
-// add the graph canvas to the body of the webpage
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// add the tooltip area to the webpage
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
 // load data
-d3.csv("data/jitterbug.csv", function(error, data) {
+d3.csv("jitterbug.csv", function(error, data) {
 
-  // change string (from CSV) into number format
   data.forEach(function(d) {
     d.score = +d.score;
     d.price_oz = +d.price_oz;
     d.neighborhood = d.neighborhood;
-//    console.log(d);
   });
 
-  // don't want dots overlapping axis, so add in buffer to data domain
   xScale.domain([.5, d3.max(data, xValue)]);
   yScale.domain([.15, .36]);
 
@@ -126,10 +115,10 @@ d3.csv("data/jitterbug.csv", function(error, data) {
     .enter().append("image")
     .attr('xlink:href',function(d){
       if (d.neighborhood =='Fidi'){
-        return 'images/icedcoffee_blue.png'
+        return 'icedcoffee_blue.png'
       }
       else { 
-        return ('images/icedcoffee_purple.png')
+        return ('icedcoffee_purple.png')
       }
     })
     .attr('class', 'dot')
